@@ -1,10 +1,17 @@
 ---
 title: Transformers
 description: Self-attention-based sequence models that power modern LLMs and vision models.
+author: Praneeth-Suresh
 difficulty: advanced
 category: generative
 domains: ["deep-learning", "nlp", "attention"]
-tags: ["self-attention", "positional-encoding", "optimisation", "sequence-modelling"]
+tags:
+  [
+    "self-attention",
+    "positional-encoding",
+    "optimisation",
+    "sequence-modelling",
+  ]
 prerequisites: ["neural-networks"]
 citations:
   - title: "Attention Is All You Need – Vaswani et al."

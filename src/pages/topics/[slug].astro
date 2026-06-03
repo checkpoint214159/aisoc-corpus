@@ -36,6 +36,18 @@ const backlinks =
       <span class="meta-badge">{topic.data.category.replace(/-/g, " ")}</span>
       {topic.data.domains.map((d: string) => <span class="meta-tag">{d}</span>)}
     </div>
+    <div class="topic-tags" aria-label="Topic tags">
+      {
+        topic.data.tags.map((tag: string) => (
+          <span class="meta-tag">{tag}</span>
+        ))
+      }
+    </div>
+    <p class="topic-author">
+      Author <a href={`https://github.com/${topic.data.author}`}
+        >@{topic.data.author}</a
+      >
+    </p>
   </header>
   <Content />
   {
@@ -62,7 +74,29 @@ const backlinks =
     display: flex;
     flex-wrap: wrap;
     gap: 0.4rem;
-    margin-bottom: 2rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .topic-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 0.7rem;
+  }
+
+  .topic-author {
+    margin: 0 0 2rem;
+    color: var(--color-muted);
+    font-size: 0.78rem;
+  }
+
+  .topic-author a {
+    color: var(--color-muted-strong);
+    transition: color 0.2s ease;
+  }
+
+  .topic-author a:hover {
+    color: var(--color-accent);
   }
 
   .meta-badge {

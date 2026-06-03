@@ -21,6 +21,28 @@ test("topics page lists all topics", async ({ page }) => {
   ).toBeVisible();
 });
 
+test("topics page searches indexed topic metadata", async ({ page }) => {
+  await page.goto("/topics");
+  const search = page.getByLabel("Search topics");
+
+  await search.fill("reinforcement");
+  await expect(page.locator(".topic-card:visible")).toHaveCount(1);
+  await expect(
+    page.locator(".topic-card:visible", { hasText: "Q-Learning" }),
+  ).toBeVisible();
+  await expect(page.locator("#topic-search-count")).toContainText("1 shown");
+
+  await search.fill("Praneeth-Suresh calculus");
+  await expect(page.locator(".topic-card:visible")).toHaveCount(1);
+  await expect(
+    page.locator(".topic-card:visible", { hasText: "Gradient Descent" }),
+  ).toBeVisible();
+
+  await search.fill("no-such-topic");
+  await expect(page.locator(".topic-card:visible")).toHaveCount(0);
+  await expect(page.locator(".topic-empty")).toBeVisible();
+});
+
 test("category page lists topics", async ({ page }) => {
   await page.goto("/categories/classical-ml");
   await expect(page.locator("h1")).toContainText("Classical Ml");
@@ -89,6 +111,22 @@ test("graph keeps edges attached when switching relation modes", async ({
 
   await page.getByRole("button", { name: "Semantic" }).click();
   await assertEdgesAttached();
+  await expect
+    .poll(async () =>
+      page
+        .locator("svg[aria-label='Knowledge graph visualization'] .links line")
+        .first()
+        .evaluate((line) => ({
+          stroke: line.getAttribute("stroke"),
+          width: line.getAttribute("stroke-width"),
+          dash: line.getAttribute("stroke-dasharray"),
+        })),
+    )
+    .toEqual({
+      stroke: "rgba(167,139,250,0.75)",
+      width: "2.25",
+      dash: "5,5",
+    });
 });
 
 test("topic page renders KaTeX equations", async ({ page }) => {
@@ -96,6 +134,18 @@ test("topic page renders KaTeX equations", async ({ page }) => {
   await expect(page.locator("h1")).toContainText("Gradient Descent");
   // KaTeX renders .katex elements
   await expect(page.locator(".katex").first()).toBeVisible();
+});
+
+test("topic page renders tags and author", async ({ page }) => {
+  await page.goto("/topics/gradient-descent");
+  await expect(page.locator(".topic-tags")).toContainText("learning-rate");
+  await expect(page.locator(".topic-author")).toContainText(
+    "Author @Praneeth-Suresh",
+  );
+  await expect(page.locator(".topic-author a")).toHaveAttribute(
+    "href",
+    "https://github.com/Praneeth-Suresh",
+  );
 });
 
 test("topic page shows backlinks panel", async ({ page }) => {

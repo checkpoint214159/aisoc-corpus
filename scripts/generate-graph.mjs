@@ -14,41 +14,49 @@ function parseFrontmatter(content) {
   if (!match) return {};
   const fm = {};
   const lines = match[1].split("\n");
-  let currentKey = null;
-  let arrayBuffer = [];
-  let inArray = false;
 
-  for (const line of lines) {
-    if (inArray) {
-      if (line.match(/^\s+-\s/)) {
-        arrayBuffer.push(line.replace(/^\s+-\s*["']?|["']?\s*$/g, ""));
-        continue;
-      } else {
-        fm[currentKey] = arrayBuffer;
-        arrayBuffer = [];
-        inArray = false;
-      }
-    }
+  const parseBracketArray = (value) =>
+    value
+      .replace(/[\[\]]/g, "")
+      .split(",")
+      .map((s) => s.trim().replace(/^["']|["']$/g, ""))
+      .filter(Boolean);
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
     const kvMatch = line.match(/^(\w+):\s*(.*)$/);
     if (kvMatch) {
       const [, key, val] = kvMatch;
       if (val.startsWith("[")) {
-        // Inline array
-        fm[key] = val
-          .replace(/[\[\]]/g, "")
-          .split(",")
-          .map((s) => s.trim().replace(/^["']|["']$/g, ""))
-          .filter(Boolean);
+        const arrayLines = [val];
+        while (!arrayLines.join("\n").includes("]") && i + 1 < lines.length) {
+          i += 1;
+          arrayLines.push(lines[i]);
+        }
+        fm[key] = parseBracketArray(arrayLines.join("\n"));
       } else if (val === "") {
-        currentKey = key;
-        inArray = true;
-        arrayBuffer = [];
+        const nextLine = lines[i + 1]?.trim() ?? "";
+        if (nextLine.startsWith("[")) {
+          const arrayLines = [];
+          while (i + 1 < lines.length) {
+            i += 1;
+            arrayLines.push(lines[i]);
+            if (lines[i].includes("]")) break;
+          }
+          fm[key] = parseBracketArray(arrayLines.join("\n"));
+        } else {
+          const arrayItems = [];
+          while (i + 1 < lines.length && lines[i + 1].match(/^\s+-\s/)) {
+            i += 1;
+            arrayItems.push(lines[i].replace(/^\s+-\s*["']?|["']?\s*$/g, ""));
+          }
+          fm[key] = arrayItems;
+        }
       } else {
         fm[key] = val.replace(/^["']|["']$/g, "");
       }
     }
   }
-  if (inArray) fm[currentKey] = arrayBuffer;
   return fm;
 }
 
@@ -97,7 +105,12 @@ export function generateGraphData() {
       const b = [...nodes[j].domains, ...nodes[j].tags];
       const sim = jaccard(a, b);
       if (sim >= SIMILARITY_THRESHOLD) {
-        edges.push({ source: nodes[i].id, target: nodes[j].id, type: "similarity", weight: Math.round(sim * 100) / 100 });
+        edges.push({
+          source: nodes[i].id,
+          target: nodes[j].id,
+          type: "similarity",
+          weight: Math.round(sim * 100) / 100,
+        });
       }
     }
   }

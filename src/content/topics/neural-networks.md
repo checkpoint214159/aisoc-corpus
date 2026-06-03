@@ -1,10 +1,17 @@
 ---
 title: Neural Networks
 description: Multi-layer parametric function approximators trained via backpropagation.
+author: Praneeth-Suresh
 difficulty: intermediate
 category: deep-learning
 domains: ["deep-learning", "representation-learning"]
-tags: ["backpropagation", "activation-functions", "optimisation", "universal-approximation"]
+tags:
+  [
+    "backpropagation",
+    "activation-functions",
+    "optimisation",
+    "universal-approximation",
+  ]
 prerequisites: ["gradient-descent"]
 citations:
   - title: "Deep Learning – Goodfellow, Bengio, Courville"

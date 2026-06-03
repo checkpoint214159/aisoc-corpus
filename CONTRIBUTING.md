@@ -21,7 +21,16 @@ npm install
 
 ### 2. Create a Topic
 
-Add a new Markdown file at `src/content/topics/<your-slug>.md` with the required frontmatter:
+Add a new Markdown file at `src/content/topics/<your-slug>.md` with the required frontmatter.
+
+#### Understanding Key Frontmatter Fields:
+*   **What is a Slug?**
+    A **slug** is the URL-friendly identifier for a topic. It is used as the filename (e.g. `<slug>.md`) and must be **strictly lowercase**, with spaces replaced by hyphens (`-`), and containing only alphanumeric characters and hyphens. 
+    *   *Example*: For "Gradient Descent", the file must be named `gradient-descent.md` and the slug is `gradient-descent`. For "Q-Learning", it is `q-learning.md`.
+*   **Domains**: 
+    Broad branches of machine learning or mathematics that the topic falls under.
+    *   *Examples*: `["supervised-learning", "unsupervised-learning", "optimization", "deep-learning", "computer-vision", "nlp", "rl", "statistics", "calculus", "linear-algebra"]`.
+    *   *Limits*: All domain list items must be entirely **lowercase**, contain **no spaces** (use hyphens `-` instead), and contain no punctuation.
 
 ```yaml
 ---
@@ -29,9 +38,9 @@ title: Your Topic Title
 description: A one-sentence summary of the concept.
 difficulty: beginner  # beginner | intermediate | advanced
 category: classical-ml  # classical-ml | deep-learning | generative | reinforcement-learning | world-modelling
-domains: ["supervised-learning", "regression"] # these are just examples
+domains: ["supervised-learning", "regression"]
 tags: ["relevant", "tags", "here"]
-prerequisites: ["slug-of-prerequisite"]  # optional
+prerequisites: ["slug-of-prerequisite"]  # optional, must match target topic file's slug
 citations:
   - title: "Paper or Book Title"
     url: "https://example.com"
@@ -49,11 +58,32 @@ Your content here...
 
 ### 4. LaTeX Guidelines
 
-```markdown
-Inline: The loss function $\mathcal{L}(\theta)$ measures error.
+The corpus compiles math equations server-side during the build using **KaTeX** (via the `remark-math` and `rehype-katex` plugins). While writing LaTeX, follow these strict rules to avoid compilation failures or layout shifts:
 
-Display:
-$$\nabla_\theta \mathcal{L} = \frac{1}{n}\sum_{i=1}^n \nabla_\theta \ell(f_\theta(x_i), y_i)$$
+*   **Inline Math**:
+    *   Enclose math in single dollar signs: `$...$`.
+    *   **Crucial Rule**: Do NOT leave spaces directly inside the dollar signs. For example, write `$\mathcal{L}(\theta)$` (correct) instead of `$ \mathcal{L}(\theta) $` (incorrect). Spaces can prevent the Markdown parser from identifying it as inline math.
+*   **Display Math (Block Level)**:
+    *   Enclose block equations in double dollar signs: `$$...$$`.
+    *   **Crucial Rule**: The starting `$$` and ending `$$` fences **must be on their own separate lines**. Do not put equations or text on the same line as the fences.
+    *   *Correct Example*:
+        ```markdown
+        $$
+        \nabla_\theta \mathcal{L} = \frac{1}{n}\sum_{i=1}^n \nabla_\theta \ell(f_\theta(x_i), y_i)
+        $$
+        ```
+*   **Special Characters**:
+    *   To avoid breaking compilation, do not use raw HTML angle brackets (`<` or `>`) inside equations. Use KaTeX commands like `\lt` (less than) and `\gt` (greater than) instead.
+
+Let's see them in action:
+
+```markdown
+Inline math works like this: The loss function $\mathcal{L}(\theta)$ measures error.
+
+Display math works like this:
+$$
+\nabla_\theta \mathcal{L} = \frac{1}{n}\sum_{i=1}^n \nabla_\theta \ell(f_\theta(x_i), y_i)
+$$
 ```
 
 ### 5. Local Validation
@@ -87,15 +117,45 @@ Reviewers should verify:
 
 ## Editor Setup
 
-We know that not everyone swears by markdown. But, its the standard we use so here are some tools you can use to get started with Markdown editing:
+While you can write Markdown in any text editor, using tools that support Obsidian-style wiki-links and live LaTeX preview is highly recommended:
+
+### Obsidian (Recommended)
+
+[Obsidian](https://obsidian.md/) is a powerful, free desktop Markdown editor that naturally understands visual relationships and wiki-links.
+1. Download and install Obsidian for your operating system.
+2. Launch Obsidian, click **"Open folder as vault"**, and select the `src/content/topics/` folder of this repository.
+3. Open Obsidian Settings (gear icon in the bottom left) -> Go to **Files and links**:
+   * Turn **ON** the toggle for **Use [[Wikilinks]]**.
+   * Change **Default location for new notes** to **Vault folder**.
+4. You can now use Obsidian's core graph view, interactive link completion, and live math rendering to write topics.
 
 ### VS Code + Foam
 
-Install the [Foam](https://foambubble.github.io/foam/) extension for WikiLink autocomplete and graph preview.
+If you prefer using VS Code:
+1. Open VS Code and open the repository folder.
+2. Open the Extensions pane (`Ctrl+Shift+X` or `Cmd+Shift+X`) and install the [Foam](https://marketplace.visualstudio.com/items?itemName=foambubble.foam-vscode) extension.
+3. Install a LaTeX rendering helper extension, such as **Markdown+Math** or **Markdown Preview Enhanced**, to preview formulas locally.
+4. Foam will provide autocomplete for double-bracket links (`[[Topic Slug]]`) and generate reference maps automatically.
 
-### Obsidian
+## Layout, Generation, & Pitfalls to Avoid
 
-Open `src/content/topics/` as an Obsidian vault. WikiLinks will resolve naturally.
+To ensure your contributions render correctly and do not trigger layout or build-time issues, keep the following in mind:
+
+### Table of Contents (TOC) Generation
+*   **How it works**: The left sidebar on each topic page is automatically generated by parsing the headings in your Markdown file.
+*   **Scope**: It scans heading depths 2 (`##`) and 3 (`###`). Main topic headers (`#`) should **never** be manually written in the body, as Astro automatically generates the page title (`h1`) using the frontmatter `title` field.
+*   **Rendering Pitfalls**:
+    *   **Do not use HTML heading tags** (e.g., `<h2>Heading</h2>`) in your content. The parser only detects markdown headings.
+    *   Start your article headings at depth 2 (e.g., `## Introduction`), not depth 1 or 4.
+    *   Ensure all heading titles are unique within a page so they don't produce duplicate URL anchors.
+
+### WikiLink & Reference Resolution
+*   **WikiLink Syntax**: Internal references must be written as `[[Topic Slug]]` or `[[Topic Slug | Display Name]]`.
+*   **Case Sensitivity**: The slug inside the wiki-link (the part before the `|`) must match the lowercase filename slug **exactly**.
+*   **Backlinks panel**: The right sidebar automatically scans and appends backlinks pointing to the current page. Do not write a manual "Backlinks" header in your content.
+
+### Category Color Mapping
+*   Nodes in the Knowledge Graph are colored based on their `category` field. If you provide a category not in the pre-defined list (e.g., `classical-ml`, `deep-learning`, `generative`, `reinforcement-learning`, `world-modelling`), the build will fail frontmatter validation.
 
 ## Questions?
 

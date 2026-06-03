@@ -106,11 +106,11 @@ export default function KnowledgeGraph() {
       .attr("stroke", (d) =>
         d.type === "prerequisite"
           ? "rgba(204,255,0,0.4)"
-          : "rgba(139,92,246,0.3)",
+          : "rgba(167,139,250,0.75)",
       )
-      .attr("stroke-width", (d) => (d.type === "prerequisite" ? 2 : 1))
+      .attr("stroke-width", (d) => (d.type === "prerequisite" ? 2 : 2.25))
       .attr("stroke-dasharray", (d) =>
-        d.type === "similarity" ? "4,4" : "none",
+        d.type === "similarity" ? "5,5" : "none",
       );
 
     // Nodes
@@ -281,7 +281,7 @@ export default function KnowledgeGraph() {
             letterSpacing: 0,
           }}
         >
-          How graph relationships are determined
+          How was the graph created?
         </summary>
         <div style={{ marginTop: "0.75rem", maxWidth: "760px" }}>
           <p style={{ margin: "0 0 0.65rem" }}>

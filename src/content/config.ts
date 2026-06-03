@@ -5,6 +5,7 @@ const topics = defineCollection({
   schema: z.object({
     title: z.string(),
     description: z.string(),
+    author: z.string().regex(/^[A-Za-z0-9-]+$/, "Use a GitHub username"),
     difficulty: z.enum(["beginner", "intermediate", "advanced"]),
     category: z.enum([
       "classical-ml",

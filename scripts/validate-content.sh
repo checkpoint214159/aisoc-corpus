@@ -11,7 +11,7 @@ fail() {
 
 # 1. Frontmatter required fields check
 printf "Validating frontmatter...\n"
-required_fields=("title" "description" "difficulty" "category" "domains" "tags")
+required_fields=("title" "description" "author" "difficulty" "category" "domains" "tags")
 
 for f in "${TOPICS_DIR}"/*.md; do
   [ -f "$f" ] || continue
