@@ -1,6 +1,6 @@
 ---
 title: Probability And Bayesian Inference
-description: Model-free reinforcement learning algorithm that learns optimal action-value functions.
+description: the bayesian perspective of things
 author: Benjamin Goh
 difficulty: beginner
 category: classical-ml

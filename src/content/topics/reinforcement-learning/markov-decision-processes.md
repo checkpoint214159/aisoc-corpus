@@ -1,6 +1,6 @@
 ---
-title: Bayesian Mechanics
-description: Model-free reinforcement learning algorithm that learns optimal action-value functions.
+title: Markov Decision Processes
+description: MDPs and POMDPs
 author: Benjamin Goh
 difficulty: beginner
 category: classical-ml
@@ -11,5 +11,5 @@ domains:
   - frequentist
   - bayesian
 tags:
-prerequisites: None. Enjoy!
+prerequisites: bayesian-inference
 ---
