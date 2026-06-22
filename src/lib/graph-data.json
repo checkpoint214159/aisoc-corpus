@@ -57,6 +57,21 @@
       "prerequisites": []
     },
     {
+      "id": "probability-and-bayesian-inference",
+      "title": "Probability And Bayesian Inference",
+      "category": "classical-ml",
+      "difficulty": "beginner",
+      "domains": [
+        "statistics",
+        "probability",
+        "bayes theorem",
+        "frequentist",
+        "bayesian"
+      ],
+      "tags": [],
+      "prerequisites": "None. Enjoy!"
+    },
+    {
       "id": "support-vector-machines",
       "title": "Support Vector Machines",
       "category": "classical-ml",
@@ -116,6 +131,21 @@
       ]
     },
     {
+      "id": "markov-decision-processes",
+      "title": "Markov Decision Processes",
+      "category": "classical-ml",
+      "difficulty": "beginner",
+      "domains": [
+        "statistics",
+        "probability",
+        "bayes theorem",
+        "frequentist",
+        "bayesian"
+      ],
+      "tags": [],
+      "prerequisites": "bayesian-inference"
+    },
+    {
       "id": "q-learning",
       "title": "Q-Learning",
       "category": "reinforcement-learning",
@@ -133,6 +163,21 @@
       "prerequisites": [
         "gradient-descent"
       ]
+    },
+    {
+      "id": "bayesian-mechanics",
+      "title": "Bayesian Mechanics",
+      "category": "classical-ml",
+      "difficulty": "beginner",
+      "domains": [
+        "statistics",
+        "probability",
+        "bayes theorem",
+        "frequentist",
+        "bayesian"
+      ],
+      "tags": [],
+      "prerequisites": "None. Enjoy!"
     }
   ],
   "edges": [
@@ -171,6 +216,24 @@
       "target": "support-vector-machines",
       "type": "similarity",
       "weight": 0.33
+    },
+    {
+      "source": "probability-and-bayesian-inference",
+      "target": "markov-decision-processes",
+      "type": "similarity",
+      "weight": 1
+    },
+    {
+      "source": "probability-and-bayesian-inference",
+      "target": "bayesian-mechanics",
+      "type": "similarity",
+      "weight": 1
+    },
+    {
+      "source": "markov-decision-processes",
+      "target": "bayesian-mechanics",
+      "type": "similarity",
+      "weight": 1
     }
   ]
 }

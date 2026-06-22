@@ -19,10 +19,10 @@ Hello reader! This is ben. Bayesian inference and, well, everything bayes, is pr
 
 Everyone who has dipped their toes into Machine Learning or Statistics related fields has/will probably stumbled into This (In)famous Guy and His Rule:
 <figure style="text-align: center;">
-	<img src="Pasted image 20260614005130.png" alt="Centered bayes. how cute">
-	 <figcaption>
-	 Caption: How Thomas Bayes looked like. Or at least we think so, we don't actually know if this is him. Our Prior is that he was a presbyterian minister (so it matches the fit in the pic). However our Evidence (this) is from a book in 1936, whilst he died in 1761. So the posterior probability that this is him may be low. Alas, we may never know.
-	 </figcaption>
+  <img src="Pasted image 20260614005130.png" alt="Centered bayes. how cute">
+   <figcaption>
+   Caption: How Thomas Bayes looked like. Or at least we think so, we don't actually know if this is him. Our Prior is that he was a presbyterian minister (so it matches the fit in the pic). However our Evidence (this) is from a book in 1936, whilst he died in 1761. So the posterior probability that this is him may be low. Alas, we may never know.
+   </figcaption>
 </figure>
 
 Bayes Rule (with different letters than you might've seen):
@@ -52,7 +52,7 @@ Understanding the following is actually quite core to much of much of Machine / 
 
 In Statistics / Machine Learning, we generally have some collected data, and want to create a useful model out of it that can help us do inference on *a variety of things*, whether that be for extrapolating data out of our domain, predicting on unseen data within the domain, classifying into dogs and cats, etc etc. 
 <figure style="text-align: center;">
-	<img src="Pasted image 20260614102726.png" alt="Dogs and cats. how cute">
+  <img src="Pasted image 20260614102726.png" alt="Dogs and cats. how cute">
 </figure>
 
 In most other readings, we would start with talking about "500 images of dogs and cats, labelling them 0s and 1s". But its important to actually take a further step back and ask, why 0s and 1s in particular? And why 'images of dogs and cats'?
@@ -156,7 +156,7 @@ $$\Huge P(w|D) \propto \int\left[ \prod_{i=1}^{N} P(y_i | x_i; w) \right] \cdot 
 and there we have it! With regularization and maximizing the MLE (which necessitates maximizing likelihood / minimizing negative log likelihood, i.e our loss function of predicting cats as 1s and dogs as 0s), we can maximize the Maximum A Posteriori of our model, which gives us "the most likely model, given our data"! Just one other note to wrap things up:
 
 - Choice of labels implies a probability distribution of our data. The choices of 1s as cat-ness was entirely our own design choice (a Bernoulli distribution). The Binary Cross-Entry Loss is something you've probably read enough at this point / exists in other parts of the corpus: I won't go into semantics here.
-	- ...but here it is anyways lol: $\text{Loss} = - \sum_{i=1}^{N} \left[ y_i \log \hat{y}_i + (1 - y_i) \log(1 - \hat{y}_i) \right]$
+  - ...but here it is anyways lol: $\text{Loss} = - \sum_{i=1}^{N} \left[ y_i \log \hat{y}_i + (1 - y_i) \log(1 - \hat{y}_i) \right]$
 
 ### Let's Wrap it Up
 
@@ -165,7 +165,7 @@ Okay, let's see what we covered so far:
 The "Underlying Data Generating Process": A neat little abstraction we use to motivate the idea of a dataset, and the probabilities associated thereof. This is itself a sort of vague phrase, but you can fit it to whatever context suits you: whether its a particular latent variable that generates the data (we will cover this later), or simply 'some process' we don't care about, we just only want to learn the mapping between our $x$'s and $y$'s.
 
 Maximum Likelihood Estimation (MLE): A core concept in ML that you should pretty much just replace in your head with the loss function. In that sense, our choice of labels + loss have the implicit effect of changing the landscape of the Maximum Likelihood: 
-	e.g choosing Focal Loss with a bunch of hyperparameter selections instead of plain Cross-Entropy causes a different probabilistic landscape to emerge. Or if you have some assumption about Gaussian-ness, MSE can be used. All this choice affects where the peak of our MLE lands.
+  e.g choosing Focal Loss with a bunch of hyperparameter selections instead of plain Cross-Entropy causes a different probabilistic landscape to emerge. Or if you have some assumption about Gaussian-ness, MSE can be used. All this choice affects where the peak of our MLE lands.
 
 Maximum A Posteriori (MAP): The Bayesian relative to MLE, this time with a neat little prior involved. We typically think of Regularization if our prior is over the model / weights $w$, but as you will observe later, it generalizes to anything that semantically resembles a Hypothesis: Say, with a latent variable.
 
