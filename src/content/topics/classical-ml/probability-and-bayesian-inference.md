@@ -294,4 +294,4 @@ $$
 \Large q(x_{t-1} | x_t) = \frac{q(x_t | x_{t-1}) q(x_{t-1})}{q(x_t)}
 $$
 
-there are many other nasties involving intractable Posteriors (for both this and the VAE case etc etc.), and a bunch of other optimizations that should be covered elsewhere, but hopefully you can see the pervasiveness of the framework?
+there are many other nasties involving intractable Posteriors (for both this and the VAE case etc etc.), and a bunch of other optimizations that should be covered elsewhere, but hopefully you can see the pervasiveness of the framework.
